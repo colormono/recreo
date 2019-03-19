@@ -7,8 +7,15 @@
 const canvasSketch = require('canvas-sketch');
 const { renderPolylines } = require('canvas-sketch-util/penplot');
 const { clipPolylinesToBox } = require('canvas-sketch-util/geometry');
+const { lerp } = require('canvas-sketch-util/math');
 const random = require('canvas-sketch-util/random');
-const { rotate, compose, applyToPoint } = require('transformation-matrix');
+const {
+  translate,
+  scale,
+  rotate,
+  compose,
+  applyToPoint
+} = require('transformation-matrix');
 
 const settings = {
   dimensions: 'A4',
@@ -27,6 +34,11 @@ const sketch = ({ width, height }) => {
 
   // ... popupate array with 2D polylines ...
   const count = 20;
+  const margin = 1.0;
+  const padding = 0;
+  const tileSize = (width - margin * 2) / count - padding;
+  const randomDisplacement = 0.1;
+  const rotateMultiplier = 50.0;
 
   // Grid
   const createGrid = () => {
@@ -43,31 +55,28 @@ const sketch = ({ width, height }) => {
 
   // Function to create a square
   const square = (x, y, size, rotation) => {
-    // Define rectangle vertices
-    half = size / 2;
-
-    const matrix = compose(rotate(rotation));
-
+    // move the origin to the pivot point
+    // then pivot the grid
+    const matrix = compose(
+      translate(x + size / 2, y + size / 2),
+      rotate(rotation)
+    );
     const path = [
-      applyToPoint(matrix, [x - half, y - half]),
-      applyToPoint(matrix, [x + half, y - half]),
-      applyToPoint(matrix, [x + half, y + half]),
-      applyToPoint(matrix, [x - half, y + half])
+      applyToPoint(matrix, [0, 0]),
+      applyToPoint(matrix, [size, 0]),
+      applyToPoint(matrix, [size, size]),
+      applyToPoint(matrix, [0, size])
     ];
     // Close the path
-    path.push(applyToPoint(matrix, [x - half, y - half]));
+    path.push(applyToPoint(matrix, [0, 0]));
     return path;
   };
 
   // Squares
-  const randomDisplacement = 0.1;
-  const rotateMultiplier = 2.0;
-  const size = 1.1;
-
   const squares = createGrid();
   squares.forEach(([u, v]) => {
-    const x = u * width;
-    const y = v * height;
+    const x = lerp(margin, width - margin, u);
+    const y = lerp(margin, height - margin, v);
 
     var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
     var rotation =
@@ -79,13 +88,12 @@ const sketch = ({ width, height }) => {
     plusOrMinus = Math.random() < 0.5 ? -1 : 1;
     var t = (y / height) * plusOrMinus * Math.random() * randomDisplacement;
 
-    lines.push(square(x + t, y, size, rotation));
+    lines.push(square(x + t, y, tileSize, rotation));
   });
 
   // Clip all the lines to a margin
   // DOCS: https://github.com/mattdesl/canvas-sketch-util/blob/master/docs/geometry.md
   // clipPolylinesToBox(lines, box, border = false, closeLines = true)
-  const margin = 1.0;
   const box = [margin, margin, width - margin, height - margin];
   lines = clipPolylinesToBox(lines, box);
 
