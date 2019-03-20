@@ -59,22 +59,6 @@ const sketch = ({ width, height }) => {
     return points;
   };
 
-  // Function to create a line
-  const drawLine = (x, y, size, rotation) => {
-    // move the origin to the pivot point
-    // then pivot the grid
-    const matrix = compose(
-      translate(x + size / 2, y),
-      rotateDEG(rotation)
-    );
-
-    const path = [
-      applyToPoint(matrix, [0, -size / 2]),
-      applyToPoint(matrix, [0, size / 2])
-    ];
-    return path;
-  };
-
   const drawSquare = (x, y, width, height, positions) => {
     const matrix = compose(
       translate(x, y),
@@ -91,7 +75,6 @@ const sketch = ({ width, height }) => {
         applyToPoint(matrix, [ly, height])
       ];
       !isNaN(line[0][0]) ? lines.push(line) : null;
-      //lines.push(line);
     }
   };
 
@@ -109,17 +92,6 @@ const sketch = ({ width, height }) => {
     } else {
       drawSquare(x, y, tileSize, tileSize, [0.1, 0.5, 0.9]);
     }
-
-    // if (y > aThirdOfHeight * 2) {
-    //   lines.push(drawLine(x - tileSize / 2, y, tileSize, rotation));
-    //   lines.push(drawLine(x, y, tileSize, rotation));
-    //   lines.push(drawLine(x + tileSize / 2, y, tileSize, rotation));
-    // } else if (y > aThirdOfHeight) {
-    //   lines.push(drawLine(x - tileSize / 3, y, tileSize, rotation));
-    //   lines.push(drawLine(x + tileSize / 3, y, tileSize, rotation));
-    // } else {
-    //   lines.push(drawLine(x, y, tileSize, rotation));
-    // }
   });
   console.log(lines);
 
