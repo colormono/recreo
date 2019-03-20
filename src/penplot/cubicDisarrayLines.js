@@ -36,7 +36,7 @@ const sketch = ({ width, height }) => {
   let lines = [];
 
   // ... popupate array with 2D polylines ...
-  const count = 22;
+  const count = 20;
   const margin = 1.0;
   const padding = 0;
   const tileSize = (width - margin * 2) / count - padding;
@@ -76,21 +76,10 @@ const sketch = ({ width, height }) => {
     const x = lerp(margin, width - margin, u);
     const y = lerp(margin, height - margin, v);
 
-    const plusOrMinus = random.value() < 0.5 ? -1 : 1;
-    const rotation =
-      (y / height) * Math.PI * plusOrMinus * random.value() * 33.0;
+    var plusOrMinus = random.value() < 0.5 ? -1 : 1;
+    var rotation = (y / height) * Math.PI * plusOrMinus * random.value() * 33.0;
 
-    // Line weight
-    if (y > aThirdOfHeight * 2) {
-      lines.push(drawLine(x - 1, y, tileSize, rotation));
-      lines.push(drawLine(x, y, tileSize, rotation));
-      lines.push(drawLine(x + 1, y, tileSize, rotation));
-    } else if (y > aThirdOfHeight) {
-      lines.push(drawLine(x, y, tileSize, rotation));
-      lines.push(drawLine(x + 1, y, tileSize, rotation));
-    } else {
-      lines.push(drawLine(x, y, tileSize, rotation));
-    }
+    lines.push(drawLine(x, y, tileSize, rotation));
   });
 
   // Clip all the lines to a margin
