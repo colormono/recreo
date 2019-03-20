@@ -15,7 +15,7 @@ const random = require('canvas-sketch-util/random');
 const {
   translate,
   scale,
-  rotate,
+  rotateDEG,
   compose,
   applyToPoint
 } = require('transformation-matrix');
@@ -61,7 +61,7 @@ const sketch = ({ width, height }) => {
     // then pivot the grid
     const matrix = compose(
       translate(x + size / 2, y + size / 2),
-      rotate(rotation)
+      rotateDEG(rotation)
     );
 
     const path = [
@@ -71,15 +71,13 @@ const sketch = ({ width, height }) => {
     return path;
   };
 
-  // drawLines
-  const drawLines = createGrid();
-  drawLines.forEach(([u, v]) => {
+  const gridLines = createGrid();
+  gridLines.forEach(([u, v]) => {
     const x = lerp(margin, width - margin, u);
     const y = lerp(margin, height - margin, v);
 
-    var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-    var rotation =
-      (((y / height) * Math.PI) / 180) * plusOrMinus * Math.random() * 100.0;
+    var plusOrMinus = random.value() < 0.5 ? -1 : 1;
+    var rotation = (y / height) * Math.PI * plusOrMinus * random.value() * 33.0;
 
     lines.push(drawLine(x, y, tileSize, rotation));
   });
