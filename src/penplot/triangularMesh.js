@@ -56,7 +56,7 @@ const sketch = ({ width, height }) => {
     return points;
   };
 
-  const draw = (x, y, width, height, positions) => {
+  const drawDot = (x, y, width, height, positions) => {
     const matrix = compose(
       translate(x, y),
       //rotateDEG(random.value() * 360.0),
@@ -76,8 +76,9 @@ const sketch = ({ width, height }) => {
   };
 
   const grid = createGrid();
-  let odd = false;
+  let odd = true;
   let counter = 0;
+
   grid.forEach(([u, v]) => {
     const x = lerp(margin * 2, width - margin * 2, u);
     const y = lerp(margin + tileSize, height - margin - tileSize, v);
@@ -85,9 +86,9 @@ const sketch = ({ width, height }) => {
 
     // Line width
     if (odd) {
-      draw(x, y, tileSize, tileSize, [0]);
+      drawDot(x, y, tileSize, tileSize, [0]);
     } else {
-      draw(x, y, tileSize, tileSize, [0.5]);
+      drawDot(x, y, tileSize, tileSize, [0.5]);
     }
     // if (y < aThirdOfHeight) {
     //   drawSquare(x, y, tileSize, tileSize, [0.5]);
