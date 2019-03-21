@@ -33,6 +33,7 @@ const seeded = random.createRandom(1);
 const sketch = ({ width, height }) => {
   // List of polylines for our pen plot
   let lines = [];
+  const lineWidth = 0.03;
 
   // ... popupate array with 2D polylines ...
   const count = 21;
@@ -85,7 +86,8 @@ const sketch = ({ width, height }) => {
 
   // Draw a point
   const drawPoint = (x, y) => {
-    drawCircle(x, y, 0.03, 90);
+    const weight = lineWidth ? lineWidth : 0.03;
+    drawCircle(x, y, weight, 90);
   };
   drawPoint(2, 5);
 
@@ -156,7 +158,7 @@ const sketch = ({ width, height }) => {
   return props =>
     renderPolylines(lines, {
       ...props,
-      lineWidth: 0.03
+      lineWidth
     });
 };
 
