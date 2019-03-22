@@ -33,29 +33,13 @@ const seeded = random.createRandom(1);
 const sketch = ({ width, height }) => {
   // List of polylines for our pen plot
   let lines = [];
-  const lineWidth = 0.03;
 
-  // ... popupate array with 2D polylines ...
-  const count = 21;
+  // Sketch setup
+  const lineWidth = 0.03;
   const margin = 1.0;
   const padding = 0.0;
+  const count = 21;
   const tileSize = (width - margin * 2) / count - padding;
-  const aThirdOfHeight = height / 3;
-
-  // Create a grid
-  const createGrid = () => {
-    const points = [];
-    for (let y = 0; y < count; y++) {
-      for (let x = 0; x < count; x++) {
-        //const u = count <= 1 ? 0.5 : x / (count - 1);
-        //const v = count <= 1 ? 0.5 : y / (count - 1);
-        const u = x / (count - 1);
-        const v = y / (count - 1);
-        points.push([u, v]);
-      }
-    }
-    return points;
-  };
 
   // Draw a line
   const drawLine = (x1, y1, x2, y2, group) => {
@@ -81,7 +65,6 @@ const sketch = ({ width, height }) => {
       lastY = y;
     }
   };
-
   drawCircle(width / 2, height / 2, 5, 30);
 
   // Draw a point
@@ -91,10 +74,39 @@ const sketch = ({ width, height }) => {
   };
   drawPoint(2, 5);
 
+  // Draw a triangle
+  const drawTriangle = (x1, y1, x2, y2, x3, y3, sides) => {
+    sides && !sides[0] ? null : drawLine(x1, y1, x2, y2);
+    sides && !sides[1] ? null : drawLine(x2, y2, x3, y3);
+    sides && !sides[2] ? null : drawLine(x3, y3, x1, y1);
+  };
+  drawTriangle(3.5, 3.5, 5.5, 5.7, 2.2, 7.5);
+  drawTriangle(6.5, 8.7, 9.2, 1.5, 2.5, 12.5, [1, 0, 1]);
+
   // Draw a square
   // Draw a celd with shapes inside
   // Fill a shape
   // Fill a shape with ()
+
+  // Create a grid
+  const createGrid = () => {
+    const points = [];
+    for (let y = 0; y < count; y++) {
+      for (let x = 0; x < count; x++) {
+        const u = x / (count - 1);
+        const v = y / (count - 1);
+        points.push([u, v]);
+      }
+    }
+    return points;
+  };
+
+  const grid = createGrid();
+  grid.forEach(([u, v]) => {
+    const x = lerp(margin, width - margin, u);
+    const y = lerp(margin, height - margin, v);
+    drawPoint(x, y);
+  });
 
   /*
   const drawDot = (x, y, width, height, positions) => {
