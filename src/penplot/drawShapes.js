@@ -48,8 +48,6 @@ const sketch = ({ width, height }) => {
     const draw = [[x1, y1], [x2, y2]];
     return group ? group.push(draw) : lines.push(draw);
   };
-  line(0.0, 0.0, width, height);
-  line(0.0, height, width, 0.0);
 
   // Draw a circle
   const circle = (centerX, centerY, radius, step) => {
@@ -66,7 +64,6 @@ const sketch = ({ width, height }) => {
       lastY = y;
     }
   };
-  circle(width / 2, height / 2, 5, 30);
 
   // Draw a ellipse
   const ellipse = (centerX, centerY, w, h, step) => {
@@ -83,14 +80,12 @@ const sketch = ({ width, height }) => {
       lastY = y;
     }
   };
-  ellipse(width / 2, height / 2, 5, 3, 1);
 
   // Draw a point
   const point = (x, y, lineWidth) => {
     const weight = lineWidth ? lineWidth : 0.03;
     return circle(x, y, weight, 90);
   };
-  point(2, 5);
 
   // Draw a triangle
   const triangle = (x1, y1, x2, y2, x3, y3, sides) => {
@@ -98,8 +93,6 @@ const sketch = ({ width, height }) => {
     sides && !sides[1] ? null : line(x2, y2, x3, y3);
     sides && !sides[2] ? null : line(x3, y3, x1, y1);
   };
-  triangle(3.5, 3.5, 5.5, 5.7, 2.2, 7.5);
-  triangle(6.5, 8.7, 9.2, 1.5, 2.5, 12.5, [1, 0, 1]);
 
   // Draw a rectangle
   const rect = (x, y, w, h, sides) => {
@@ -108,7 +101,6 @@ const sketch = ({ width, height }) => {
     sides && !sides[2] ? null : line(x + w, y + h, x, y + h);
     sides && !sides[3] ? null : line(x, y + h, x, y);
   };
-  rect(10.0, 10.0, 5.0, 5.0);
 
   // Draw a quad
   const quad = (x1, y1, x2, y2, x3, y3, x4, y4, sides) => {
@@ -117,7 +109,6 @@ const sketch = ({ width, height }) => {
     sides && !sides[2] ? null : line(x3, y3, x4, y4);
     sides && !sides[3] ? null : line(x4, y4, x1, y1);
   };
-  quad(2.0, 2.0, width - 2, 4.0, width - 2, height - 2, 2, height - 4);
 
   // Draw a polygon
   const polygon = (v, closed) => {
@@ -129,9 +120,41 @@ const sketch = ({ width, height }) => {
       closed ? line(v[s - 1][0], v[s - 1][1], v[0][0], v[0][1]) : null;
     }
   };
-  polygon([[0, 1], [2, 3], [3, 2], [13, 9], [18, 2]], true);
 
   // Draw a arc
+  const arq = (centerX, centerY, w, h, start, stop, mode) => {
+    let lastX = -999;
+    let lastY = -999;
+
+    for (let angle = start; angle <= stop; angle += 0.05) {
+      const rad = degToRad(angle - 90);
+      x = centerX + w * Math.cos(rad);
+      y = centerY + h * Math.sin(rad);
+      if (lastX > -999) line(x, y, lastX, lastY);
+      lastX = x;
+      lastY = y;
+    }
+
+    if (mode === 'CHORD') {
+      line(
+        lastX,
+        lastY,
+        centerX + w * Math.cos(degToRad(start - 90)),
+        centerY + h * Math.sin(degToRad(start - 90))
+      );
+    }
+
+    if (mode === 'PIE') {
+      line(lastX, lastY, centerX, centerY);
+      line(
+        centerX,
+        centerY,
+        centerX + w * Math.cos(degToRad(start - 90)),
+        centerY + h * Math.sin(degToRad(start - 90))
+      );
+    }
+  };
+
   // Draw a celd with shapes inside
   // Fill a shape
   // Fill a shape with ()
@@ -148,6 +171,20 @@ const sketch = ({ width, height }) => {
     }
     return cell;
   };
+
+  // Make some drawing
+  // line(0.0, 0.0, width, height);
+  // line(0.0, height, width, 0.0);
+  // circle(width / 2, height / 2, 5, 30);
+  // ellipse(width / 2, height / 2, 5, 3, 1);
+  // point(2, 5);
+  // triangle(3.5, 3.5, 5.5, 5.7, 2.2, 7.5);
+  // triangle(6.5, 8.7, 9.2, 1.5, 2.5, 12.5, [1, 0, 1]);
+  // rect(10.0, 10.0, 5.0, 5.0);
+  // quad(2.0, 2.0, width - 2, 4.0, width - 2, height - 2, 2, height - 4);
+  // polygon([[0, 1], [2, 3], [3, 2], [13, 9], [18, 2]], true);
+  // arq(width / 2, height / 2, 5, 3, 0, 330, 'PIE');
+  // arq(width / 2, height / 2, 5, 3, 0, 100, 'CHORD');
 
   const grid = createGrid();
   grid.forEach(([u, v]) => {
@@ -175,36 +212,6 @@ const sketch = ({ width, height }) => {
       !isNaN(line[0][0]) ? lines.push(line) : null;
     }
   };
-
-  const grid = createGrid();
-  let odd = true;
-  let counter = 0;
-
-  grid.forEach(([u, v]) => {
-    const x = lerp(margin * 2, width - margin * 2, u);
-    const y = lerp(margin + tileSize, height - margin - tileSize, v);
-    const size = 1;
-
-    // Line width
-    if (odd) {
-      drawDot(x, y, tileSize, tileSize, [0]);
-    } else {
-      drawDot(x, y, tileSize, tileSize, [0.5]);
-    }
-    // if (y < aThirdOfHeight) {
-    //   square(x, y, tileSize, tileSize, [0.5]);
-    // } else if (y < aThirdOfHeight * 2) {
-    //   square(x, y, tileSize, tileSize, [0.2, 0.8]);
-    // } else {
-    //   square(x, y, tileSize, tileSize, [0.1, 0.5, 0.9]);
-    // }
-
-    counter++;
-    if (counter % count === 0) {
-      counter = 0;
-      odd = !odd;
-    }
-  });
   */
 
   // Clip all the lines to a margin
