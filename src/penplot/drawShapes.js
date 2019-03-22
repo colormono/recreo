@@ -119,6 +119,18 @@ const sketch = ({ width, height }) => {
   };
   quad(2.0, 2.0, width - 2, 4.0, width - 2, height - 2, 2, height - 4);
 
+  // Draw a polygon
+  const polygon = (v, closed) => {
+    const s = v.length;
+    if (v && s > 1) {
+      for (let i = 1; i < s; i++) {
+        line(v[i - 1][0], v[i - 1][1], v[i][0], v[i][1]);
+      }
+      closed ? line(v[s - 1][0], v[s - 1][1], v[0][0], v[0][1]) : null;
+    }
+  };
+  polygon([[0, 1], [2, 3], [3, 2], [13, 9], [18, 2]], true);
+
   // Draw a arc
   // Draw a celd with shapes inside
   // Fill a shape
