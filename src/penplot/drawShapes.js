@@ -41,17 +41,18 @@ const sketch = ({ width, height }) => {
   const count = 21;
   const tileSize = (width - margin * 2) / count - padding;
 
+  // 2D Primitives
+
   // Draw a line
-  const drawLine = (x1, y1, x2, y2, group) => {
+  const line = (x1, y1, x2, y2, group) => {
     const draw = [[x1, y1], [x2, y2]];
-    //console.log(`New line from [${x1}, ${y1}] to [${x2},${y2}]`);
     return group ? group.push(draw) : lines.push(draw);
   };
-  drawLine(0.0, 0.0, width, height);
-  drawLine(0.0, height, width, 0.0);
+  line(0.0, 0.0, width, height);
+  line(0.0, height, width, 0.0);
 
   // Draw a circle
-  const drawCircle = (centerX, centerY, radius, step) => {
+  const circle = (centerX, centerY, radius, step) => {
     let lastX = -999;
     let lastY = -999;
 
@@ -59,53 +60,88 @@ const sketch = ({ width, height }) => {
       const rad = degToRad(angle);
       x = centerX + radius * Math.cos(rad);
       y = centerY + radius * Math.sin(rad);
-      if (lastX > -999) drawLine(x, y, lastX, lastY);
+      if (lastX > -999) line(x, y, lastX, lastY);
 
       lastX = x;
       lastY = y;
     }
   };
-  drawCircle(width / 2, height / 2, 5, 30);
+  circle(width / 2, height / 2, 5, 30);
+
+  // Draw a ellipse
+  const ellipse = (centerX, centerY, w, h, step) => {
+    let lastX = -999;
+    let lastY = -999;
+
+    for (let angle = 0; angle <= 360; angle += step) {
+      const rad = degToRad(angle);
+      x = centerX + w * Math.cos(rad);
+      y = centerY + h * Math.sin(rad);
+      if (lastX > -999) line(x, y, lastX, lastY);
+
+      lastX = x;
+      lastY = y;
+    }
+  };
+  ellipse(width / 2, height / 2, 5, 3, 1);
 
   // Draw a point
-  const drawPoint = (x, y) => {
+  const point = (x, y, lineWidth) => {
     const weight = lineWidth ? lineWidth : 0.03;
-    drawCircle(x, y, weight, 90);
+    return circle(x, y, weight, 90);
   };
-  drawPoint(2, 5);
+  point(2, 5);
 
   // Draw a triangle
-  const drawTriangle = (x1, y1, x2, y2, x3, y3, sides) => {
-    sides && !sides[0] ? null : drawLine(x1, y1, x2, y2);
-    sides && !sides[1] ? null : drawLine(x2, y2, x3, y3);
-    sides && !sides[2] ? null : drawLine(x3, y3, x1, y1);
+  const triangle = (x1, y1, x2, y2, x3, y3, sides) => {
+    sides && !sides[0] ? null : line(x1, y1, x2, y2);
+    sides && !sides[1] ? null : line(x2, y2, x3, y3);
+    sides && !sides[2] ? null : line(x3, y3, x1, y1);
   };
-  drawTriangle(3.5, 3.5, 5.5, 5.7, 2.2, 7.5);
-  drawTriangle(6.5, 8.7, 9.2, 1.5, 2.5, 12.5, [1, 0, 1]);
+  triangle(3.5, 3.5, 5.5, 5.7, 2.2, 7.5);
+  triangle(6.5, 8.7, 9.2, 1.5, 2.5, 12.5, [1, 0, 1]);
 
-  // Draw a square
+  // Draw a rectangle
+  const rect = (x, y, w, h, sides) => {
+    sides && !sides[0] ? null : line(x, y, x + w, y);
+    sides && !sides[1] ? null : line(x + w, y, x + w, y + h);
+    sides && !sides[2] ? null : line(x + w, y + h, x, y + h);
+    sides && !sides[3] ? null : line(x, y + h, x, y);
+  };
+  rect(10.0, 10.0, 5.0, 5.0);
+
+  // Draw a quad
+  const quad = (x1, y1, x2, y2, x3, y3, x4, y4, sides) => {
+    sides && !sides[0] ? null : line(x1, y1, x2, y2);
+    sides && !sides[1] ? null : line(x2, y2, x3, y3);
+    sides && !sides[2] ? null : line(x3, y3, x4, y4);
+    sides && !sides[3] ? null : line(x4, y4, x1, y1);
+  };
+  quad(2.0, 2.0, width - 2, 4.0, width - 2, height - 2, 2, height - 4);
+
+  // Draw a arc
   // Draw a celd with shapes inside
   // Fill a shape
   // Fill a shape with ()
 
   // Create a grid
   const createGrid = () => {
-    const points = [];
+    const cell = [];
     for (let y = 0; y < count; y++) {
       for (let x = 0; x < count; x++) {
         const u = x / (count - 1);
         const v = y / (count - 1);
-        points.push([u, v]);
+        cell.push([u, v]);
       }
     }
-    return points;
+    return cell;
   };
 
   const grid = createGrid();
   grid.forEach(([u, v]) => {
     const x = lerp(margin, width - margin, u);
     const y = lerp(margin, height - margin, v);
-    drawPoint(x, y);
+    point(x, y);
   });
 
   /*
@@ -144,11 +180,11 @@ const sketch = ({ width, height }) => {
       drawDot(x, y, tileSize, tileSize, [0.5]);
     }
     // if (y < aThirdOfHeight) {
-    //   drawSquare(x, y, tileSize, tileSize, [0.5]);
+    //   square(x, y, tileSize, tileSize, [0.5]);
     // } else if (y < aThirdOfHeight * 2) {
-    //   drawSquare(x, y, tileSize, tileSize, [0.2, 0.8]);
+    //   square(x, y, tileSize, tileSize, [0.2, 0.8]);
     // } else {
-    //   drawSquare(x, y, tileSize, tileSize, [0.1, 0.5, 0.9]);
+    //   square(x, y, tileSize, tileSize, [0.1, 0.5, 0.9]);
     // }
 
     counter++;
