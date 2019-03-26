@@ -121,7 +121,18 @@ const sketch = ({ width, height }) => {
     }
   };
 
-  // Draw a arc
+  /**
+   * Arc
+   *
+   * @description Draw an arc
+   * @param {Number} centerX x-coordinate of the arc's ellipse
+   * @param {Number} centerY y-coordinate of the arc's ellipse
+   * @param {Number} w width of the arc's ellipse by default
+   * @param {Number} h height of the arc's ellipse by default
+   * @param {Number} start angle to start the arc, specified in degrees
+   * @param {Number} stop angle to stop the arc, specified in degrees
+   * @param {String} [mode] how to close the shape ('CHORD', 'PIE', default: null)
+   */
   const arq = (centerX, centerY, w, h, start, stop, mode) => {
     let lastX = -999;
     let lastY = -999;
@@ -155,17 +166,49 @@ const sketch = ({ width, height }) => {
     }
   };
 
-  // Draw a celd with shapes inside
+  /**
+   * Stamp
+   *
+   * @description Draw a stamp pattern
+   * @param {Number} x x-coordinate of the center point
+   * @param {Number} y y-coordinate of the center point
+   * @param {Number} w
+   * @param {Number} h
+   * @param {[[Number,Number]]} pattern
+   */
+  const stamp = (x, y, w, h, pattern) => {
+    const matrix = compose(
+      translate(x, y),
+      rotateDEG(random.value() * 360.0),
+      translate(-w / 2, -h / 2)
+    );
+
+    for (let i = 0; i < pattern.length; i++) {
+      const lx = lerp(0, w, pattern[i][0]);
+      const ly = lerp(0, h, pattern[i][1]);
+      const p = [applyToPoint(matrix, [lx, 0]), applyToPoint(matrix, [lx, ly])];
+      line(p[0][0], p[0][1], p[1][0], p[1][1]);
+    }
+  };
+  stamp(10, 10, 10, 10, [[0.1, 1], [0.5, 0.5], [1, 1]]);
+
   // Fill a shape
   // Fill a shape with ()
 
-  // Create a grid
-  const createGrid = () => {
+  /**
+   * Grid
+   *
+   * @description Create a grid
+   * @typedef {object} grid
+   * @param {Number} rows The number of rows
+   * @param {Number} columns The number of columns
+   */
+  const grid = (rows, columns, current) => {
     const cell = [];
-    for (let y = 0; y < count; y++) {
-      for (let x = 0; x < count; x++) {
-        const u = x / (count - 1);
-        const v = y / (count - 1);
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < columns; x++) {
+        const u = x / (columns - 1);
+        const v = y / (rows - 1);
         cell.push([u, v]);
       }
     }
@@ -173,6 +216,7 @@ const sketch = ({ width, height }) => {
   };
 
   // Make some drawing
+
   // line(0.0, 0.0, width, height);
   // line(0.0, height, width, 0.0);
   // circle(width / 2, height / 2, 5, 30);
@@ -185,34 +229,12 @@ const sketch = ({ width, height }) => {
   // polygon([[0, 1], [2, 3], [3, 2], [13, 9], [18, 2]], true);
   // arq(width / 2, height / 2, 5, 3, 0, 330, 'PIE');
   // arq(width / 2, height / 2, 5, 3, 0, 100, 'CHORD');
-
-  const grid = createGrid();
-  grid.forEach(([u, v]) => {
+  const myGrid = grid(3, 21);
+  myGrid.forEach(([u, v]) => {
     const x = lerp(margin, width - margin, u);
     const y = lerp(margin, height - margin, v);
     point(x, y);
   });
-
-  /*
-  const drawDot = (x, y, width, height, positions) => {
-    const matrix = compose(
-      translate(x, y),
-      //rotateDEG(random.value() * 360.0),
-      translate(-width / 2, -height / 2)
-    );
-
-    for (var i = 0; i < positions.length; i++) {
-      const lx = lerp(0, width, positions[i]);
-      const ly = lerp(0, height, 0);
-
-      const line = [
-        applyToPoint(matrix, [lx, 0]),
-        applyToPoint(matrix, [lx, height])
-      ];
-      !isNaN(line[0][0]) ? lines.push(line) : null;
-    }
-  };
-  */
 
   // Clip all the lines to a margin
   // DOCS: https://github.com/mattdesl/canvas-sketch-util/blob/master/docs/geometry.md
