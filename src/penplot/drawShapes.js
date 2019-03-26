@@ -43,13 +43,30 @@ const sketch = ({ width, height }) => {
 
   // 2D Primitives
 
-  // Draw a line
+  /**
+   * Line
+   *
+   * @description Draw an line between points A and B
+   * @param {*} x1 float: x-coordinate of the first point
+   * @param {*} y1 float: y-coordinate of the first point
+   * @param {*} x2 float: x-coordinate of the second poin
+   * @param {*} y2 float: y-coordinate of the second point
+   * @param {*} group group of lines
+   */
   const line = (x1, y1, x2, y2, group) => {
     const draw = [[x1, y1], [x2, y2]];
     return group ? group.push(draw) : lines.push(draw);
   };
 
-  // Draw a circle
+  /**
+   * Circle
+   *
+   * @description Draw a circle
+   * @param {*} centerX float: x-coordinate of the ellipse
+   * @param {*} centerY float: y-coordinate of the ellipse
+   * @param {*} radius float: width and height of the ellipse by default
+   * @param {*} step resolution of the circle in degrees
+   */
   const circle = (centerX, centerY, radius, step) => {
     let lastX = -999;
     let lastY = -999;
@@ -190,9 +207,10 @@ const sketch = ({ width, height }) => {
       line(p[0][0], p[0][1], p[1][0], p[1][1]);
     }
   };
-  stamp(10, 10, 10, 10, [[0.1, 1], [0.5, 0.5], [1, 1]]);
+  stamp(10, 10, 10, 10, [[0, 1], [0.5, 0.5], [1, 1]]);
 
   // Fill a shape
+
   // Fill a shape with ()
 
   /**
