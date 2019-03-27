@@ -1,7 +1,10 @@
 const canvasSketch = require('canvas-sketch');
 const { renderPolylines } = require('canvas-sketch-util/penplot');
 const { clipPolylinesToBox } = require('canvas-sketch-util/geometry');
+const newArray = require('new-array');
 const random = require('canvas-sketch-util/random');
+const { degToRad, lerp } = require('canvas-sketch-util/math');
+const triangulate = require('delaunay-triangulate');
 
 const settings = {
   dimensions: 'A4',
@@ -18,98 +21,97 @@ const sketch = ({ width, height }) => {
   // List of polylines for our pen plot
   let lines = [];
 
+  /**
+   * Line
+   *
+   * @description Draw an line between points A and B
+   * @param {*} x1 float: x-coordinate of the first point
+   * @param {*} y1 float: y-coordinate of the first point
+   * @param {*} x2 float: x-coordinate of the second poin
+   * @param {*} y2 float: y-coordinate of the second point
+   * @param {*} group group of lines
+   */
+  const line = (x1, y1, x2, y2, group) => {
+    const draw = [[x1, y1], [x2, y2]];
+    return group ? group.push(draw) : lines.push(draw);
+  };
+
+  /**
+   * Circle
+   *
+   * @description Draw a circle
+   * @param {*} centerX float: x-coordinate of the ellipse
+   * @param {*} centerY float: y-coordinate of the ellipse
+   * @param {*} radius float: width and height of the ellipse by default
+   * @param {*} step resolution of the circle in degrees
+   */
+  const circle = (centerX, centerY, radius, step) => {
+    let lastX = -999;
+    let lastY = -999;
+
+    for (let angle = 0; angle <= 360; angle += step) {
+      const rad = degToRad(angle);
+      x = centerX + radius * Math.cos(rad);
+      y = centerY + radius * Math.sin(rad);
+      if (lastX > -999) line(x, y, lastX, lastY);
+
+      lastX = x;
+      lastY = y;
+    }
+  };
+
+  // Draw a ellipse
+  const ellipse = (centerX, centerY, w, h, step) => {
+    let lastX = -999;
+    let lastY = -999;
+
+    for (let angle = 0; angle <= 360; angle += step) {
+      const rad = degToRad(angle);
+      x = centerX + w * Math.cos(rad);
+      y = centerY + h * Math.sin(rad);
+      if (lastX > -999) line(x, y, lastX, lastY);
+
+      lastX = x;
+      lastY = y;
+    }
+  };
+
+  // Draw a point
+  const point = (x, y, lineWidth) => {
+    const weight = lineWidth ? lineWidth : 0.03;
+    return circle(x, y, weight, 90);
+  };
+
   // ... popupate array with 2D polylines ...
-  const count = 20;
-
-  // Grid
-  const createGrid = () => {
-    const points = [];
-    for (let x = 0; x < count; x++) {
-      for (let y = 0; y < count; y++) {
-        const u = x / (count - 1);
-        const v = y / (count - 1);
-        points.push([u, v]);
-      }
-    }
-    return points;
-  };
-
-  // random lines
-  const randomGrid = [200, 200];
-  const frequency = 1;
-  const amplitude = 0.2;
-
-  for (let x = 0; x < randomGrid[0]; x++) {
-    const column = [];
-    for (let y = 0; y < randomGrid[1]; y++) {
-      const u = (x / (randomGrid[0] - 1)) * width;
-      const v = (y / (randomGrid[1] - 1)) * height;
-      const n = amplitude * random.noise2D(u * frequency, v * frequency);
-      column.push([u + n, v]);
-    }
-    lines.push(column);
-  }
-
-  const randomLines = createGrid();
-  randomLines.forEach(([u, v]) => {
-    const x = u * width + seeded.value();
-    const y = v * height;
-    const n = amplitude * random.noise2D(u * frequency, v * frequency);
-    lines.push([[x, y], [x + n, y + n]]);
-  });
-
-  // intermitent points
-  const points = createGrid().filter(() => Math.random() > 0.5);
-  points.forEach(([u, v]) => {
-    const x = u * width;
-    const y = v * height;
-    lines.push([[x, y], [x + 0.3, y]]);
-  });
-
-  // Function to create a square
-  const square = (x, y, size) => {
-    // Define rectangle vertices
-    const path = [
-      [x - size, y - size],
-      [x + size, y - size],
-      [x + size, y + size],
-      [y + size, x + size],
-      [x - size, y + size]
+  const pointCount = 1000;
+  const positions = newArray(pointCount).map(() => {
+    const margin = 2;
+    return [
+      random.range(margin, width - margin),
+      random.range(margin, height - margin)
     ];
+  });
+
+  const cells = triangulate(positions);
+  console.log(cells);
+
+  // For example, to get the 3 vertices of the first triangle:
+  // const triangle = cells[0].map(i => positions[i]);
+  // log each 2D point in the triangle
+  // console.log(triangle[0], triangle[1], triangle[2]);
+
+  lines = cells.map(cell => {
+    // Get vertices for this cell
+    const triangle = cell.map(i => positions[i]);
     // Close the path
-    path.push(path[0]);
-    return path;
-  };
+    triangle.push(triangle[0]);
+    return triangle;
+  });
 
-  // Get centre of the print
-  const cx = width / 2;
-  const cy = height / 2;
-
-  // Create 12 concentric pairs of squares
-  for (let i = 0; i < 3; i++) {
-    const size = i + 1;
-    const margin = 0.25;
-    lines.push(square(cx, cy, size));
-    lines.push(square(cx, cy, size + margin));
-  }
-
-  // Draw some circles expanding outward
-  const steps = 7;
-  const spacing = Math.min(width, height) * 0.05;
-  const radius = Math.min(width, height) * 0.25;
-  for (let j = 0; j < 3; j++) {
-    const r = radius + j * spacing;
-    const circle = [];
-    for (let i = 0; i < steps; i++) {
-      const t = i / Math.max(1, steps - 1);
-      const angle = Math.PI * 2 * t;
-      circle.push([
-        width / 2 + Math.cos(angle) * r,
-        height / 2 + Math.sin(angle) * r
-      ]);
-    }
-    lines.push(circle);
-  }
+  // Draw position points
+  positions.map(p => {
+    point(p[0], p[1], 0.06);
+  });
 
   // Clip all the lines to a margin
   // DOCS: https://github.com/mattdesl/canvas-sketch-util/blob/master/docs/geometry.md
