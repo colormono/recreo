@@ -136,6 +136,15 @@ En el directorio `/examples` se encuentran sketchs con posibles soluciones a los
 - [generative artistry by tim holman](https://generativeartistry.com/)
 - [Tyler Hobbs](https://tylerxhobbs.com/) - Artist Portfolio
 
+### 2D Libs
+
+- [SVG.js](https://svgjs.com/docs/2.7/)
+- [Vivus](https://maxwellito.github.io/vivus/)
+- [TwoJS](https://two.js.org)
+- [PaperJs](http://paperjs.org)
+- [P5JS SVG](http://zenozeng.github.io/p5.js-svg)
+- [roughjs](https://roughjs.com/)
+
 ### Penplotter
 
 - [Pen Plotter Art & Algorithms, Part 1](https://mattdesl.svbtle.com/pen-plotter-1) - Article by Matt DesLauriers
