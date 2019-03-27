@@ -134,12 +134,19 @@ En el directorio `/examples` se encuentran sketchs con posibles soluciones a los
 - [Math as code](https://github.com/Jam3/math-as-code) - Reference to ease developers into mathematical notation by showing comparisons with JavaScript code.
 - [Linear Interpolation](https://mattdesl.svbtle.com/linear-interpolation)
 - [generative artistry by tim holman](https://generativeartistry.com/)
+- [Tyler Hobbs](https://tylerxhobbs.com/) - Artist Portfolio
 
 ### Penplotter
 
 - [Pen Plotter Art & Algorithms, Part 1](https://mattdesl.svbtle.com/pen-plotter-1) - Article by Matt DesLauriers
 - [Pen Plotter Art & Algorithms, Part 2](https://mattdesl.svbtle.com/pen-plotter-2) - Article by Matt DesLauriers
 - [2D Transformations](https://processing.org/tutorials/transform2d/) - Article by J David Eisenberg
+- [Pen Plotter Programming: The Basics](https://medium.com/@fogleman/pen-plotter-programming-the-basics-ec0407ab5929) - Article by Michael Fogleman
+- [An intro to Pen Plotters](http://www.tobiastoft.com/posts/an-intro-to-pen-plotters) - Article by Tobias Toft
+- [Anders Hoff](http://inconvergent.net/) (Inconvergent) writes a lot about his process in Python and Lisp.
+- [Michael Fogleman](https://medium.com/@fogleman/pen-plotter-programming-the-basics-ec0407ab5929) wrote a blog article on pen plotter basics. He’s also written tools like ln, a 3D to 2D line art engine for Go.
+- [Tyler Hobbs](http://www.tylerlhobbs.com/writings) writes about generative art and programming, and his work shares many parallels with my process here.
+- [Paul Butler](http://www.tobiastoft.com/posts/an-intro-to-pen-plotters) recently wrote a blog post on his pen plotter work in Python.
 
 ### AR
 
