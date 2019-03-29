@@ -126,6 +126,8 @@ En el directorio `/examples` se encuentran sketchs con posibles soluciones a los
 
 ## Enlaces útiles
 
+- [Awesome generative art](https://github.com/kosmos/awesome-generative-art) - Manually curated collection of Generative Art resources, tools and shiny things.
+- [Awesome creative coding](https://github.com/terkelg/awesome-creative-coding) - Creative Coding: Generative Art, Data visualization, Interaction Design, Resources.
 - [canvas-sketch](https://github.com/mattdesl/canvas-sketch) - A framework for making generative artwork in JavaScript and the browser by Matt DesLauriers.
 - [canvas-sketch Documentation](https://github.com/mattdesl/canvas-sketch/blob/master/docs/README.md)
 - [canvas-sketch Cheat Sheet](https://github.com/mattdesl/workshop-generative-art/blob/master/docs/cheat-sheet.md)
@@ -135,6 +137,8 @@ En el directorio `/examples` se encuentran sketchs con posibles soluciones a los
 - [Linear Interpolation](https://mattdesl.svbtle.com/linear-interpolation)
 - [generative artistry by tim holman](https://generativeartistry.com/)
 - [Tyler Hobbs](https://tylerxhobbs.com/) - Artist Portfolio
+- [ON GENERATIVE ALGORITHMS](https://inconvergent.net/generative/) - Essay was written between late 2015 and mid 2016 by Anders Hoff.
+- [INCONVERGENT](https://inconvergent.net/#about) - Texts about generative art, work, and experiments by Anders Hoff.
 
 ### 2D Libs
 
@@ -147,6 +151,7 @@ En el directorio `/examples` se encuentran sketchs con posibles soluciones a los
 
 ### Penplotter
 
+- [Awesome Plotters](https://github.com/beardicus/awesome-plotters) - A curated list of code and resources for computer-controlled drawing machines and other visual art robots.
 - [Pen Plotter Art & Algorithms, Part 1](https://mattdesl.svbtle.com/pen-plotter-1) - Article by Matt DesLauriers
 - [Pen Plotter Art & Algorithms, Part 2](https://mattdesl.svbtle.com/pen-plotter-2) - Article by Matt DesLauriers
 - [2D Transformations](https://processing.org/tutorials/transform2d/) - Article by J David Eisenberg
@@ -156,6 +161,7 @@ En el directorio `/examples` se encuentran sketchs con posibles soluciones a los
 - [Michael Fogleman](https://medium.com/@fogleman/pen-plotter-programming-the-basics-ec0407ab5929) wrote a blog article on pen plotter basics. He’s also written tools like ln, a 3D to 2D line art engine for Go.
 - [Tyler Hobbs](http://www.tylerlhobbs.com/writings) writes about generative art and programming, and his work shares many parallels with my process here.
 - [Paul Butler](http://www.tobiastoft.com/posts/an-intro-to-pen-plotters) recently wrote a blog post on his pen plotter work in Python.
+- [https://github.com/evil-mad/stipplegen](Software that can create stipple drawings and “TSP art,” from image files)
 
 ### AR
 
