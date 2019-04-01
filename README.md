@@ -139,6 +139,9 @@ En el directorio `/examples` se encuentran sketchs con posibles soluciones a los
 - [Tyler Hobbs](https://tylerxhobbs.com/) - Artist Portfolio
 - [ON GENERATIVE ALGORITHMS](https://inconvergent.net/generative/) - Essay was written between late 2015 and mid 2016 by Anders Hoff.
 - [INCONVERGENT](https://inconvergent.net/#about) - Texts about generative art, work, and experiments by Anders Hoff.
+- [StippleGen: Weighted Voronoi stippling and TSP paths in Processing](https://www.evilmadscientist.com/2012/stipplegen-weighted-voronoi-stippling-and-tsp-paths-in-processing/)
+- [Stippling, or, a Voronoi Stippler](https://mrl.nyu.edu/~ajsecord/stipples.html)
+- [Travelling Salesman Art](http://www.drububu.com/illustration/tsp/index.html)
 
 ### 2D Libs
 
@@ -161,7 +164,14 @@ En el directorio `/examples` se encuentran sketchs con posibles soluciones a los
 - [Michael Fogleman](https://medium.com/@fogleman/pen-plotter-programming-the-basics-ec0407ab5929) wrote a blog article on pen plotter basics. He’s also written tools like ln, a 3D to 2D line art engine for Go.
 - [Tyler Hobbs](http://www.tylerlhobbs.com/writings) writes about generative art and programming, and his work shares many parallels with my process here.
 - [Paul Butler](http://www.tobiastoft.com/posts/an-intro-to-pen-plotters) recently wrote a blog post on his pen plotter work in Python.
-- [https://github.com/evil-mad/stipplegen](Software that can create stipple drawings and “TSP art,” from image files)
+- [Stipplegen](https://github.com/evil-mad/stipplegen) - Software that can create stipple drawings and “TSP art,” from image files
+- [Fonts](http://imajeenyus.com/computer/20150110_single_line_fonts/index.shtml) - Penplotter typography
+- [Optimizing Plots with a TSP Solver](https://nb.paulbutler.org/optimizing-plots-with-tsp-solver/) - By Paul Butler – March 25, 2018
+- [Drawing SVG path and polygon in cm](https://stackoverflow.com/questions/30806126/drawing-svg-path-and-polygon-in-cm/30806975)
+- [Blackstripes drawings](https://github.com/fullscreennl/blackstripes-python-extensions) - turns an png image into a svg line drawing
+- [P5 SVG](http://zenozeng.github.io/p5.js-svg/examples/#basic)
+- [svg path sorter](https://github.com/inconvergent/svgsort) for more efficient (pen)plotting. https://inconvergent.net/
+- [Turtle graphics](http://compform.net/turtles/)
 
 ### AR
 
