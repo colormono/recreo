@@ -6,11 +6,11 @@
 
 Colección de imágenes generadas mediante distintos algoritmos y materializadas con un plotter de corte y dibujo. A modo “álbum de figuritas” están organizadas según la curva de complejidad de sistemas de arte generativo propuesta en el paper “What is generative art?” (Galanter, 2003). Una recopilación de ejercicios que recorren la transición del orden al caos con algoritmos propios y reinterpretaciones de referentes como Sol Lewitt, Daniel Shiffman, Marius Watz y Golan Levin. A la selección que es montada sobre la pared la acompaña un álbum con 12 variaciones a escala para cada uno de estos “equipos”.
 
-- Symmetry and Tiling: Sol Lewitt, Islamic Art
+- Symmetry and Tiling: Sol Lewitt, Piet Mondrian, Islamic Art
 - L-Systems and Fractals: Marius Watz
-- Genetic Systems and A-Life: Daniel Shiffman
-- Chaotic Systems: Robert Hodgin, Golan Levin
-- Randomization: Frieder Nake, Georg Nees, Karl Otto.
+- Genetic Systems and A-Life: Golan Levin, Daniel Shiffman
+- Chaotic Systems: Joy Division, Robert Hodgin, Golan Levin
+- Randomization: Frieder Nake, Georg Nees
 
 Generative math: Dealunay, Voronoi
 
@@ -120,9 +120,28 @@ Las versiones de las librerías utilizadas al momento de desarrollo del proyecto
 - https://github.com/chrvadala/transformation-matrix
 - https://www.npmjs.com/package/delaunay-triangulate
 
+### 2D Libs
+
+- [SVG.js](https://svgjs.com/docs/2.7/)
+- [Vivus](https://maxwellito.github.io/vivus/)
+- [TwoJS](https://two.js.org)
+- [PaperJs](http://paperjs.org)
+- [P5JS SVG](http://zenozeng.github.io/p5.js-svg)
+- [roughjs](https://roughjs.com/)
+- [Canvas2Svg](https://gliffy.github.io/canvas2svg/)
+
 ### Ejemplos
 
 En el directorio `/examples` se encuentran sketchs con posibles soluciones a los ditstintos problemas, atacándolos por separado.
+
+## Lecturas
+
+- [Computational Stippling: Can Machines Do as Well as Humans?](https://blog.wolfram.com/2016/05/06/computational-stippling-can-machines-do-as-well-as-humans/) - May 6, 2016 — Silvia Hao,
+- [StippleGen: Weighted Voronoi stippling and TSP paths in Processing](https://www.evilmadscientist.com/2012/stipplegen-weighted-voronoi-stippling-and-tsp-paths-in-processing/)
+- [Stippling, or, a Voronoi Stippler](https://mrl.nyu.edu/~ajsecord/stipples.html)
+- [Travelling Salesman Art](http://www.drububu.com/illustration/tsp/index.html)
+- [On Generative Algorithms](https://inconvergent.net/generative/) - Essay was written between late 2015 and mid 2016 by Anders Hoff.
+- [Linear Interpolation](https://mattdesl.svbtle.com/linear-interpolation)
 
 ## Enlaces útiles
 
@@ -134,23 +153,9 @@ En el directorio `/examples` se encuentran sketchs con posibles soluciones a los
 - [Generative Art Workshop with Canvas-Sketch](https://github.com/mattdesl/workshop-generative-art)
 - [canvas-sketch-util](https://github.com/mattdesl/canvas-sketch-util) - Utilities for generative art in Canvas, WebGL and JavaScript.
 - [Math as code](https://github.com/Jam3/math-as-code) - Reference to ease developers into mathematical notation by showing comparisons with JavaScript code.
-- [Linear Interpolation](https://mattdesl.svbtle.com/linear-interpolation)
-- [generative artistry by tim holman](https://generativeartistry.com/)
-- [Tyler Hobbs](https://tylerxhobbs.com/) - Artist Portfolio
-- [ON GENERATIVE ALGORITHMS](https://inconvergent.net/generative/) - Essay was written between late 2015 and mid 2016 by Anders Hoff.
-- [INCONVERGENT](https://inconvergent.net/#about) - Texts about generative art, work, and experiments by Anders Hoff.
-- [StippleGen: Weighted Voronoi stippling and TSP paths in Processing](https://www.evilmadscientist.com/2012/stipplegen-weighted-voronoi-stippling-and-tsp-paths-in-processing/)
-- [Stippling, or, a Voronoi Stippler](https://mrl.nyu.edu/~ajsecord/stipples.html)
-- [Travelling Salesman Art](http://www.drububu.com/illustration/tsp/index.html)
-
-### 2D Libs
-
-- [SVG.js](https://svgjs.com/docs/2.7/)
-- [Vivus](https://maxwellito.github.io/vivus/)
-- [TwoJS](https://two.js.org)
-- [PaperJs](http://paperjs.org)
-- [P5JS SVG](http://zenozeng.github.io/p5.js-svg)
-- [roughjs](https://roughjs.com/)
+- [Tim holman](https://generativeartistry.com/) - Artist portfolio
+- [Tyler Hobbs](https://tylerxhobbs.com/) - Artist portfolio
+- [INCONVERGENT](https://inconvergent.net/#about) - Work and experiments by Anders Hoff.
 
 ### Penplotter
 
@@ -172,10 +177,17 @@ En el directorio `/examples` se encuentran sketchs con posibles soluciones a los
 - [P5 SVG](http://zenozeng.github.io/p5.js-svg/examples/#basic)
 - [svg path sorter](https://github.com/inconvergent/svgsort) for more efficient (pen)plotting. https://inconvergent.net/
 - [Turtle graphics](http://compform.net/turtles/)
+- https://mathematica.stackexchange.com/questions/118992/how-can-mathematica-be-used-to-create-images-like-these/118995
+- [triangle-divider](https://depasquale.art/works/triangle-divider/) by depasquale.art
 
 ### AR
 
 ### 3D and Shaders
+
+- https://github.com/fogleman/ln
+- https://threejs.org/docs/#examples/renderers/SVGRenderer
+- https://www.marciot.com/blog-demos/three-to-svg/
+- https://mt236.wordpress.com/2016/03/26/using-three-js-to-render-to-svg/
 
 ### Thermal Printer
 
