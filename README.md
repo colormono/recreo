@@ -16,6 +16,12 @@ Generative math: Dealunay, Voronoi
 
 ---
 
+Como cuando eramos chicos, al menos yo, 35 en el 2019.
+La diferencia es que este álbum no se completa con los rostros de temporada.
+Son retratos que sólo para [nosotros](#) significan algo.
+
+---
+
 ## Indice
 
 - [Instrucciones](#instrucciones)

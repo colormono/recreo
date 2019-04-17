@@ -15,66 +15,75 @@ boolean saveSVG = false;
 
 int actRandomSeed = 0;
 
+int layers = 2;
 int tileCount = 40;
 float lineWeight;
 
+ArrayList<String> placeholders = new ArrayList<String>();
 PImage placeholder;
 String filename;
-
-int toMM(int px) {
-  return int(px*35.277/100);
-}
-
-float toPX(float mm) {
-  return mm/3.527783333;
-}
 
 void setup() {
   // println("size in mm should be " + toMM(600) +","+ toMM(600));
   println("size in px should be " + toPX(534) +", "+ toPX(856));
-   
   size(151, 242);
-  lineWeight = toPX(0.7);
   
-  placeholder = loadImage("piratebay.gif");
+  smooth();
+  noFill();
+  lineWeight = toPX(0.7);
+  strokeWeight(lineWeight);
+
+  // Placeholders
+  placeholders.add("piratebay.gif");
+  placeholders.add("revolution.gif");
+  placeholders.add("che.gif");
+  placeholders.add("cuba.gif");
+
+  placeholder = loadImage(placeholders.get(3));
 }
 
 
 void draw() {
-  if (saveSVG) beginRecord(SVG, filename+".svg");
-
   // clean background
   background(255);
 
   // draw placeholder
   //if (!saveSVG) image(placeholder, 0, 0);
 
-  smooth();
-  noFill();
-  strokeWeight(0.7);
+  for (int l=1; l<=layers; l++) {
+    if (saveSVG) beginRecord(SVG, filename+".svg");
 
-  randomSeed(actRandomSeed);
-  float cellSize = width/tileCount;
+    randomSeed(actRandomSeed);
+    float cellSize = width/tileCount;
 
-  for (int y=0; y<height-cellSize; y+=cellSize) {
-    for (int x=0; x<width-cellSize; x+=cellSize) {
+    for (int y=0; y<height-cellSize; y+=cellSize) {
+      for (int x=0; x<width-cellSize; x+=cellSize) {
 
-      float pixelBright = brightness(placeholder.get(x, y));
-      //int toggle = (int) random(0, 2);
-      int toggle = pixelBright > 100 ? 1 : 0;
+        // Static
+        //int toggle = 1;
 
-      if (toggle == 0) {
-        line(x, y, x+cellSize, y+cellSize);
-      }
-      if (toggle == 1) {
-        line(x, y+cellSize, x+cellSize, y);
+        // Random
+        //int toggle = (int) random(0, 2);
+
+        // Based on placeholder
+        int px = int(map(x, 0, width, 0, placeholder.width));
+        int py = int(map(y, 0, height, 0, placeholder.height));
+        float pixelBright = brightness(placeholder.get(px, py));
+        int toggle = pixelBright > 145 ? 1 : 0;
+
+        if (toggle == 0) {
+          line(x, y, x+cellSize, y+cellSize);
+        }
+        if (toggle == 1) {
+          line(x, y+cellSize, x+cellSize, y);
+        }
       }
     }
-  }
 
-  if (saveSVG) {
-    saveSVG = false;
-    endRecord();
+    if (saveSVG) {
+      saveSVG = false;
+      endRecord();
+    }
   }
 }
 
@@ -94,6 +103,15 @@ void keyReleased() {
     saveFrame(filename + ".png");
     saveSVG = true;
   }
+}
+
+// unit conversion
+int toMM(int px) {
+  return int(px*35.277/100);
+}
+
+float toPX(float mm) {
+  return mm/3.527783333;
 }
 
 // timestamp
