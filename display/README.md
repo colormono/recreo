@@ -23,7 +23,7 @@ Lista de componentes utilizados
 
 - Arduino Uno
 - NodeMCU 1.0 (ESP-12E Module)
-- Modulo Display LCD (st7920)
+- Modulo Display LCD ()
 - Fuente de alimentación para protoboard 5v, 3.3v
 - Fuente de alimentación 5v 2amp
 
@@ -38,7 +38,6 @@ U8GLIB_ST7920_128X64_4X u8g(13, 11, 10);
 - SCK = 13 (E)
 - MOSI = 11 (R/W)
 - CS = 10 (RS)
-- RESET = 8 (RS)
 
 ### Drivers
 
