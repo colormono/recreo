@@ -32,8 +32,8 @@ void loop(void) {
     u8g2.print(F("se detiene a pensar"));
     
   } while ( u8g2.nextPage() );
-  delay(1000);
+  delay(10000);
   u8g2.clear();
-  delay(1000);
+  delay(5000);
 }
 
