@@ -2,9 +2,9 @@
  * Que se enfrenta
  * forked from 10 Prints - diagonals in a grid
  *
- * - Multiple layer support
- * - Added more burshes
- * - New size for print test
+ * Features:
+ * - Multiple layer
+ * - Basic pack of burshes
  * 	 
  * MOUSE
  * left click          : new random layout
@@ -18,13 +18,17 @@
 import processing.svg.*;
 import java.util.Calendar;
 
+// Layers
+ArrayList<Layer> layers;
+// Printing
+String filename;
+boolean saveSVG;
+// Image processing
 ArrayList<String> placeholders;
 PImage placeholder;
-ArrayList<Layer> layers;
-String filename;
-boolean saveSVG = false;
-boolean showPlaceholder = false;
 
+// Customize
+boolean showPlaceholder = false;
 int actRandomSeed = 0;
 int tileCount = 33;
 
@@ -55,7 +59,6 @@ void setup() {
 
   // create initial composition
   compose();
-
   smooth();
   noFill();
 }
