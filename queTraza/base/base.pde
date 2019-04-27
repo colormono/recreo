@@ -1,8 +1,10 @@
 /**
  * Que se enfrenta
+ * forked from 10 Prints - diagonals in a grid
  *
- * Figu: 534, 856
- * A4: 2100, 2970
+ * - Multiple layer support
+ * - Added more burshes
+ * - New size for print test
  * 	 
  * MOUSE
  * left click          : new random layout
@@ -24,14 +26,15 @@ boolean saveSVG = false;
 boolean showPlaceholder = false;
 
 int actRandomSeed = 0;
-int tileCount = 80;
+int tileCount = 33;
 
 void setup() {
-  // println("size in mm should be " + toMM(600) +","+ toMM(600));
+  //println("size in mm should be " + toMM(151) +","+ toMM(242));
+  // println("size in px should be " + toPX(2100) +", "+ toPX(2970));
   println("size in px should be " + toPX(2100) +", "+ toPX(2970));
-  //size(151, 242); // Figu
-  size(595, 842); // A4
-  //pixelDensity(2);
+  size(200, 320); // Figu
+  //size(595, 842); // A4
+  // pixelDensity(2);
 
   // load placeholders
   placeholders = new ArrayList<String>();
@@ -42,11 +45,11 @@ void setup() {
   placeholders.add("lkm.gif");
 
   // use placeholder
-  placeholder = loadImage(placeholders.get(4));
+  placeholder = loadImage(placeholders.get(1));
 
   // create an empty list to store the layers
   layers = new ArrayList<Layer>();
-  layers.add(new Layer(1, rcol(), toPX(0.7)));
+  layers.add(new Layer(1, rcol(), 0.7));
   layers.add(new Layer(2, rcol(), toPX(3)));
   println("Layers: " + layers.size());
 
@@ -74,12 +77,11 @@ void draw() {
     // draw composition
     stroke(layer.c);
     strokeWeight(layer.sw);
-    strokeCap(SQUARE);
 
     for (int b=0; b<layer.composition.size(); b++) {
       // get and draw brush
       Brush brush = layer.composition.get(b);
-      brush.draw();
+      brush.draw(layer.sw);
     }
 
     if (saveSVG) {
@@ -109,11 +111,11 @@ void compose() {
       float pixelBright = brightness(placeholder.get(px, py));
       int p = pixelBright > 145 ? 1 : 0;
 
-      // create brush
-      Brush brush = new Brush(x, y, cellSize, cellSize, p);
+      // pick a brush
+      Brush brush = new Brush(p, x, y, cellSize, cellSize);
 
       // select layer
-      int l = pixelBright > 145 ? 1 : 0;;
+      int l = pixelBright > 145 ? 1 : 0;
 
       // push brush into layer composition
       layers.get(l).composition.add(brush);

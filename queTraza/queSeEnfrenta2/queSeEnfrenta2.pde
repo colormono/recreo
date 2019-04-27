@@ -1,99 +1,143 @@
 /**
- * 10 Prints - diagonals in a grid
+ * Que se enfrenta
+ * forked from 10 Prints - diagonals in a grid
+ *
+ * - Multiple layer support
+ * - 2 brushes
+ *
+ * Figu: 534, 856
+ * A4: 2100, 2970
  * 	 
  * MOUSE
  * left click          : new random layout
  * 
  * KEYS
+ * h                   : show/hide placeholder
+ * c                   : compose
  * s                   : save png
  * p                   : save pdf
  */
 import processing.svg.*;
 import java.util.Calendar;
 
+ArrayList<String> placeholders;
+PImage placeholder;
+ArrayList<Layer> layers;
+String filename;
 boolean saveSVG = false;
+boolean showPlaceholder = false;
 
 int actRandomSeed = 0;
-
-int layers = 2;
-int tileCount = 40;
-float lineWeight;
-
-ArrayList<String> placeholders = new ArrayList<String>();
-PImage placeholder;
-String filename;
+int tileCount = 120;
 
 void setup() {
   // println("size in mm should be " + toMM(600) +","+ toMM(600));
-  println("size in px should be " + toPX(534) +", "+ toPX(856));
-  size(151, 242);
-  
-  smooth();
-  noFill();
-  lineWeight = toPX(0.7);
-  strokeWeight(lineWeight);
+  println("size in px should be " + toPX(2100) +", "+ toPX(2970));
+  //size(151, 242); // Figu
+  size(595, 842); // A4
 
-  // Placeholders
+  // load placeholders
+  placeholders = new ArrayList<String>();
   placeholders.add("piratebay.gif");
   placeholders.add("revolution.gif");
   placeholders.add("che.gif");
   placeholders.add("cuba.gif");
+  placeholders.add("lkm.gif");
 
-  placeholder = loadImage(placeholders.get(3));
+  // use placeholder
+  placeholder = loadImage(placeholders.get(4));
+
+  // create an empty list to store the layers
+  layers = new ArrayList<Layer>();
+  layers.add(new Layer(1, #000000, toPX(0.7)));
+  layers.add(new Layer(2, #000000, toPX(3)));
+  println("Layers: " + layers.size());
+
+  // create initial composition
+  compose();
+
+  smooth();
+  noFill();
 }
-
 
 void draw() {
   // clean background
   background(255);
 
   // draw placeholder
-  //if (!saveSVG) image(placeholder, 0, 0);
+  if (!saveSVG && showPlaceholder) image(placeholder, 0, 0);
 
-  for (int l=1; l<=layers; l++) {
-    if (saveSVG) beginRecord(SVG, filename+".svg");
+  // draw layers
+  for (int l=0; l<layers.size(); l++) {
+    // get current layer
+    Layer layer = layers.get(l);
 
-    randomSeed(actRandomSeed);
-    float cellSize = width/tileCount;
+    if (saveSVG) beginRecord(SVG, filename + "-" + layer.index + ".svg");
 
-    for (int y=0; y<height-cellSize; y+=cellSize) {
-      for (int x=0; x<width-cellSize; x+=cellSize) {
+    // draw composition
+    stroke(layer.c);
+    strokeWeight(layer.sw);
+    strokeCap(SQUARE);
 
-        // Static
-        //int toggle = 1;
-
-        // Random
-        //int toggle = (int) random(0, 2);
-
-        // Based on placeholder
-        int px = int(map(x, 0, width, 0, placeholder.width));
-        int py = int(map(y, 0, height, 0, placeholder.height));
-        float pixelBright = brightness(placeholder.get(px, py));
-        int toggle = pixelBright > 145 ? 1 : 0;
-
-        if (toggle == 0) {
-          line(x, y, x+cellSize, y+cellSize);
-        }
-        if (toggle == 1) {
-          line(x, y+cellSize, x+cellSize, y);
-        }
-      }
+    for (int b=0; b<layer.composition.size(); b++) {
+      // get and draw brush
+      Brush brush = layer.composition.get(b);
+      brush.draw();
     }
 
     if (saveSVG) {
-      saveSVG = false;
       endRecord();
     }
   }
+
+  if (saveSVG) {
+    saveSVG = false;
+  }
 }
 
+void compose() {
+  // set random seed
+  randomSeed(actRandomSeed);
+
+  // set cell size
+  float cellSize = width/tileCount;
+
+  // create grid
+  for (int y=0; y<height-cellSize; y+=cellSize) {
+    for (int x=0; x<width-cellSize; x+=cellSize) {
+
+      // process image
+      int px = int(map(x, 0, width, 0, placeholder.width));
+      int py = int(map(y, 0, height, 0, placeholder.height));
+      float pixelBright = brightness(placeholder.get(px, py));
+      int p = pixelBright > 145 ? 1 : 0;
+
+      // create brush
+      Brush brush = new Brush(x, y, cellSize, cellSize, p);
+
+      // select layer
+      int l = pixelBright > 145 ? 1 : 0;
+
+      // push brush into layer composition
+      layers.get(l).composition.add(brush);
+    }
+  }
+}
 
 void mousePressed() {
   actRandomSeed = (int) random(100000);
 }
 
 void keyReleased() {
-  filename = timestamp() + "-##";
+  filename = "prints/" + timestamp() + "-" + actRandomSeed;
+
+  if (key == 'c' || key == 'C') {
+    compose();
+  }
+
+  if (key == 'h' || key == 'H') {
+    showPlaceholder = !showPlaceholder;
+  }
 
   if (key == 's' || key == 'S') {
     saveFrame(filename + ".png");
