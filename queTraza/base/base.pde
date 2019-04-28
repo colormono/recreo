@@ -74,7 +74,8 @@ void draw() {
   for (int l=0; l<layers.size(); l++) {
     // get current layer
     Layer layer = layers.get(l);
-
+    
+    // begin record layer
     if (saveSVG) beginRecord(SVG, filename + "-" + layer.index + ".svg");
 
     // draw composition
@@ -87,14 +88,10 @@ void draw() {
       brush.draw(layer.sw);
     }
 
-    if (saveSVG) {
-      endRecord();
-    }
+    // end record layer
+    if (saveSVG) endRecord();
   }
-
-  if (saveSVG) {
-    saveSVG = false;
-  }
+  if (saveSVG) saveSVG = false;
 }
 
 void compose() {
@@ -133,22 +130,18 @@ void mousePressed() {
 void keyReleased() {
   filename = "prints/" + timestamp() + "-" + actRandomSeed;
 
-  if (key == 'c' || key == 'C') {
-    compose();
-  }
-
-  if (key == 'h' || key == 'H') {
-    showPlaceholder = !showPlaceholder;
-  }
-
-  if (key == 's' || key == 'S') {
-    saveFrame(filename + ".png");
-  }
-
+  if (key == 'c' || key == 'C') compose();
+  if (key == 'h' || key == 'H') showPlaceholder = !showPlaceholder;
+  if (key == 's' || key == 'S') saveFrame(filename + ".png");
   if (key == 'p' || key == 'P') {
     saveFrame(filename + ".png");
     saveSVG = true;
   }
+
+  // if (keyCode == DOWN) tileCountY = max(tileCountY-1, 1);
+  // if (keyCode == UP) tileCountY += 1;
+  // if (keyCode == LEFT) tileCountX = max(tileCountX-1, 1);
+  // if (keyCode == RIGHT) tileCountX += 1;
 }
 
 // unit conversion
