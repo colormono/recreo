@@ -22,6 +22,14 @@ Son retratos que sólo para [nosotros](#) significan algo.
 
 ---
 
+### SVG
+
+- [Optimizing Plots with a TSP Solver](https://nb.paulbutler.org/optimizing-plots-with-tsp-solver/) - Article
+- [SVG Sort](https://github.com/inconvergent/svgsort) - Optimizar SVGs, CLI tool para otimizar los path. Por ahora el plotter no los reconoce...
+- [Canvas2Svg.js](https://gliffy.github.io/canvas2svg/) - Turns your Canvas into SVG using javascript.
+
+---
+
 ## Indice
 
 - [Instrucciones](#instrucciones)
@@ -125,6 +133,7 @@ Las versiones de las librerías utilizadas al momento de desarrollo del proyecto
 
 - https://github.com/chrvadala/transformation-matrix
 - https://www.npmjs.com/package/delaunay-triangulate
+- http://leebyron.com/mesh/#hull.getregion
 
 ### 2D Libs
 
@@ -185,6 +194,7 @@ En el directorio `/examples` se encuentran sketchs con posibles soluciones a los
 - [Turtle graphics](http://compform.net/turtles/)
 - https://mathematica.stackexchange.com/questions/118992/how-can-mathematica-be-used-to-create-images-like-these/118995
 - [triangle-divider](https://depasquale.art/works/triangle-divider/) by depasquale.art
+- [Poisson Disk Sampling in Processing](https://sighack.com/post/poisson-disk-sampling-bridsons-algorithm)
 
 ### AR
 
