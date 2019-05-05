@@ -19,12 +19,19 @@ import generativedesign.*;
 import java.util.Calendar;
 import processing.serial.*;
 
+// automatic port detection
+// based on deviceName
 Serial myPort;
+String deviceName = "/dev/tty.wchusbserial1430";
 boolean isConnected = false;
+int linefeed = 10; // new line ASCII = 10
+
+// image and colors
 PImage img;
 color[] colors;
 color c;
 
+// default sorting mode
 String sortMode = GenerativeDesign.SATURATION;
 
 void setup() {
@@ -36,10 +43,11 @@ void setup() {
   img = loadImage("colores.jpg");
 
   // connect to your port
-  int portId = connectToPort("/dev/tty.wchusbserial1430");
+  int portId = connectToPort(deviceName);
   if (isConnected) {
     String portName = Serial.list()[portId];
     myPort = new Serial(this, portName, 9600);
+    myPort.clear();
   }
 }
 
@@ -74,17 +82,34 @@ void draw() {
 
 
   if (isConnected) {
-    if (mousePressed) {
-      // send color
-      c = get(mouseX, mouseY);
-      int h = (int) map(hue(c), 0, 360, 0, 255);
-      int s = (int) map(saturation(c), 0, 100, 0, 255);
-      int b = (int) map(brightness(c), 0, 100, 0, 255);
-      myPort.write(h+","+s+","+b+"\n");
-      println(h, s, b);
-    } else {
-      myPort.write('0');
-    }
+  }
+}
+
+void mousePressed() {
+  if (isConnected) {
+    // send color
+    c = get(mouseX, mouseY);
+    int h = (int) map(hue(c), 0, 360, 0, 255);
+    int s = (int) map(saturation(c), 0, 100, 0, 255);
+    int b = (int) map(brightness(c), 0, 100, 0, 255);
+    String msg = h+","+s+","+b+"\n";
+    print("SEND: " + msg);
+    myPort.write(msg);
+
+    //myPort.write("180\n");
+  }
+}
+
+// listen serial port
+void serialEvent (Serial myPort){
+  // read serial buffer as string
+  String myString = myPort.readString();
+  // if we have any other bytes than linefeed
+  if (myString != null){
+    // trim crap
+    myString = trim(myString);
+    //value1 = int(myString); //make string to integer
+    println("RECEIVED: " + myString);
   }
 }
 

@@ -62,8 +62,8 @@ void draw() {
         y = radius * sin(rad) + random(-r, r);
         if (lastX > -999) line(x, y, lastX, lastY);
 
-        radius += 0.3;
-        angle += 7;
+        radius += 0.1;
+        angle += 3;
         lastX = x;
         lastY = y;
       }
