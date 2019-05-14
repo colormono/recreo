@@ -9,7 +9,7 @@ class Agent {
 
   void walk() {
     PVector step = PVector.random2D();
-    float r = random(100);
+    float r = random(80);
     if (r<5) {
       step.mult(random(10, 25));
     } else {
@@ -18,9 +18,13 @@ class Agent {
     pos.add(step);
   }
 
+  float getPixelBright(float x, float y) {
+    int px = int(map(x, 0, width, 0, placeholder.width));
+    int py = int(map(y, 0, height, 0, placeholder.height));
+    return brightness(placeholder.get(px, py));
+  }
+
   void draw() {
-    strokeWeight(1);
-    stroke(0);
     line(pos.x, pos.y, prev.x, prev.y);
     prev = pos.copy();
   }

@@ -6,79 +6,93 @@ ArrayList<String> placeholders;
 PImage placeholder;
 String filename;
 boolean newDraw = true;
+boolean showImage = false;
 
 ArrayList<PVector> originPoints;
 Agent[] walkers = {};
 int cellSize = 10;
-int maxPoints = 10;
+int maxPoints = 100;
 
 void setup() {
   size(600, 800);
 
   // load and use placeholder
   placeholders = new ArrayList<String>();
-  placeholders.add("dacvinci.jpg");
+  placeholders.add("dali.jpg");
   placeholder = loadImage(placeholders.get(0));
 
   noFill();
-  background(255);
+  strokeWeight(0.5);
+  stroke(0);
+
   compose();
 }
 
 void draw() {
-  if (walkers.length > 0) {
-    for (int i =0; i<walkers.length; i++) {
-      walkers[i].walk();
-      walkers[i].draw();
-    }
-  }
-
-  // draw brightest points
   if (newDraw) {
-    for (int p=0; p<originPoints.size(); p++) {
-      PVector currentAgent = originPoints.get(p);
-      ellipse(currentAgent.x, currentAgent.y, 10, 10);
-      println(p, currentAgent.x, currentAgent.y);
+    if (showImage) {
+      image(placeholder, 0, 0);
+    } else {
+      background(255);
     }
-    
     newDraw = false;
   }
+
+  if (walkers.length > 0) {
+    for (int i =0; i<walkers.length; i++) {
+      float b = walkers[i].getPixelBright(walkers[i].pos.x, walkers[i].pos.y);
+      // walk on black
+      if (b < 100) {
+        walkers[i].walk();
+        walkers[i].draw();
+      }
+      // or move to a new position
+      else {
+        walkers[i].prev.x = walkers[i].pos.x = random(width);
+        walkers[i].prev.y = walkers[i].pos.y = random(width);
+      }
+    }
+  }
+}
+
+float getPixelBright(float x, float y) {
+  int px = int(map(x, 0, width, 0, placeholder.width));
+  int py = int(map(y, 0, height, 0, placeholder.height));
+  return brightness(placeholder.get(px, py));
 }
 
 void compose() {
   originPoints = new ArrayList<PVector>();
   originPoints.add(new PVector(width/2, height/2));
 
-  // get the brightest points
+  // get the darkest points
   while (maxPoints > 0) {
 
     // initial record
-    float record = 0;
+    float record = 255;
     PVector recordPoint = new PVector(0, 0);
 
     // for each pixel on the image
     for (int x=0; x<width; x+=cellSize) {
       for (int y=0; y<height; y+=cellSize) {
 
-        // compare with saved points
-        for (int p=0; p<originPoints.size(); p++) {
-          // do not repeat points
-          float d = dist(x, y, originPoints.get(p).x, originPoints.get(p).y);
-          if (d > 20) {
-            // process image
-            // get pixel bright
-            int px = int(map(x, 0, width, 0, placeholder.width));
-            int py = int(map(y, 0, height, 0, placeholder.height));
-            float pixelBright = brightness(placeholder.get(px, py));
+        // process image
+        // get pixel bright
+        float pixelBright = getPixelBright(x, y);
 
-            // compare brights
-            if (pixelBright > record) {
-                        println(pixelBright);
+        // compare brights
+        if (pixelBright < record) {
+          // compare with saved points
+          boolean save = true;
+          for (int p=0; p<originPoints.size(); p++) {
+            float d = dist(x, y, originPoints.get(p).x, originPoints.get(p).y);
+            if (d < 20) save = false;
+          }
 
-              record = pixelBright;
-              recordPoint.x = x;
-              recordPoint.y = y;
-            }
+          if (save) {
+            record = pixelBright;
+            recordPoint.x = x;
+            recordPoint.y = y;
           }
         }
       }
@@ -91,47 +105,21 @@ void compose() {
     maxPoints--;
   }
 
-
-  //  for (int x=0; x<width; x+=cellSize) {
-  //    for (int y=0; y<height; y+=cellSize) {
-
-  //      // get brightest points
-
-  //      originPoints.add("dacvinci.jpg");
-
-
-  //      // process image
-  //      // get placeholder pixel
-  //      int px = int(map(x, 0, width, 0, placeholder.width));
-  //      int py = int(map(y, 0, height, 0, placeholder.height));
-
-  //      // map pixel bright to stroke weight
-  //      float pixelBright = brightness(placeholder.get(px, py));
-  //      int p = (int) map(pixelBright, 0, 255, 5, 0.1);        
-  //      strokeWeight(p);
-
-  //      // add an error
-  //      float error = random(-2, 2);
-
-  //      // draw a cross
-  //      pushMatrix();
-  //      translate(x+error, y+error);
-  //      line(0, 0, cellSize, cellSize);
-  //      line(cellSize, 0, 0, cellSize);
-  //      popMatrix();
-  //    }
-  //  }
+  // Create walkers
+  for (int p=0; p<originPoints.size(); p++) {
+    PVector currentAgent = originPoints.get(p);
+    Agent w = new Agent(currentAgent.x, currentAgent.y);
+    walkers = (Agent[]) append(walkers, w);
+  }
 }
-
-void mouseReleased() {
-  Agent w = new Agent(mouseX, mouseY);
-  walkers = (Agent[]) append(walkers, w);
-}
-
 
 void keyReleased() {
   filename = "prints/" + timestamp();
   if (key == 's' || key == 'S') saveFrame(filename + ".png");
+  if (key == 'i' || key == 'I') {
+    showImage = !showImage;
+    newDraw = true;
+  };
 }
 
 // timestamp
