@@ -10,6 +10,8 @@
 
 # folders
 _private/
+_printTests/
+_resources/
 
 # misc
 .DS_Store
