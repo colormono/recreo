@@ -11,6 +11,9 @@
  * p                   : print svgs
  * t                   : toggle order/chaos
  */
+// TO DO:
+// - Order patterns by value (lighter to darker)
+
 import processing.svg.*;
 ArrayList<Layer> layers;
 String filename;
@@ -101,8 +104,8 @@ void compose() {
   for (int y=0; y<height-cellSize; y+=cellSize) {
     for (int x=0; x<width-cellSize; x+=cellSize) {
 
-      // random pick
-      // select layer
+      // pick brush
+
       //int px = int(map(x, 0, width, 0, placeholder.width));
       //int py = int(map(y, 0, height, 0, placeholder.height));
       //float pixelBright = brightness(placeholder.get(px, py));
@@ -116,14 +119,15 @@ void compose() {
         // p = floor(dist(x, y, width/2, height/2) % layers.size());
         // p = floor(sqrt(x+y) % layers.size());
         // p = floor(aureo(x+y, true) % layers.size());
-        p = floor(aureo(dist(x, y, width/2, height/2), true) % layers.size());
+        p = floor(random(6));
       }
 
       // create brush
       Brush brush = new Brush(x, y, cellSize, cellSize, p);
 
-      // push brush into layer composition
-      layers.get(p).composition.add(brush);
+      // push brush into selected layer
+      int l = floor(random(3));
+      layers.get(l).composition.add(brush);
     }
   }
 }
