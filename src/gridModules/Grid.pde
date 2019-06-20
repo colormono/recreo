@@ -27,15 +27,17 @@ class Grid {
     margins = _margins;
 
     // create modules
+    int id = 0;
     float moduleWidth = (w-margins[1]-margins[3]-(gutterCols*(cols-1)))/cols;
     float moduleHeight = (h-margins[0]-margins[2]-(gutterRows*(rows-1)))/rows;
     println("Module size", moduleWidth, moduleHeight);
     modules = new ArrayList<Module>();
-    for (int x=0; x<cols; x++) {
-      for (int y=0; y<rows; y++) {        
+    for (int y=0; y<rows; y++) {        
+      for (int x=0; x<cols; x++) {
         float moduleX = (x > 0) ? x*moduleWidth+gutterCols*x+margins[3] : x*moduleWidth+margins[3];
         float moduleY = (y > 0) ? y*moduleHeight+gutterRows*y+margins[0] : y*moduleHeight+margins[0];
-        modules.add(new Module(moduleX, moduleY, moduleWidth, moduleHeight));
+        modules.add(new Module(id, moduleX, moduleY, moduleWidth, moduleHeight));
+        id++;
       }
     }
   }
