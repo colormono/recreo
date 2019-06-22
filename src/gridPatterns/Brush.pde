@@ -6,6 +6,9 @@ class Brush {
   int p; // pattern
   boolean mirror;
 
+  // pattnerns counter
+  int brushPatterns = 6;
+
   Brush(float _x, float _y, float _w, float _h, int _p) {
     x = _x;
     y = _y;
@@ -13,6 +16,14 @@ class Brush {
     h = _h;
     p = _p;
     mirror = (random(100) > 50) ? true : false;
+  }
+
+  void nextPattern() {
+    if (p < brushPatterns) {
+      p += 1;
+    } else {
+      p = 0;
+    }
   }
 
   void draw() {

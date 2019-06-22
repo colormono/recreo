@@ -14,116 +14,113 @@
 // TO DO:
 // - Order patterns by value (lighter to darker)
 
-import processing.svg.*;
-ArrayList<Layer> layers;
-String filename;
-boolean saveSVG = false;
-int seed = 0;
+import processing.svg.*;  
+boolean saveSVG = false;  // handle SVG saving
+String filename;          // handle filename
+ArrayList<Layer> layers;  // store layers
 
+// Setup grid system
+Grid grid;
+float[] margins = {50, 50, 50, 50};
+int cols = 18;
+int rows = 18;
+int gutter = 0;
 
-int tileCount = 20;
+// Setup randomness
+int seed = 1;
 boolean chaos = false;
 
 
 void setup() {
-  // println("size in mm should be " + toMM(600) +","+ toMM(600));
   println("size in px should be " + toPX(2100) +", "+ toPX(2970));
-  //size(151, 242); // Figu
-  size(595, 842); // A4
+  size(595, 842);
+  smooth();
+  noFill();
 
-  // create an empty list to store the layers
+  // create layers
   layers = new ArrayList<Layer>();
   layers.add(new Layer(1, #000000, toPX(2)));
   layers.add(new Layer(2, #FF0000, toPX(5)));
   layers.add(new Layer(3, #0000FF, toPX(5)));
   println("Layers: " + layers.size());
 
-  // create initial composition
-  compose();
+  // create grid
+  grid = new Grid(width, height, cols, rows, gutter, gutter, margins);
 
-  smooth();
-  noFill();
+  // start
+  compose();
 }
 
 void draw() {
   // clean background
   background(255);
 
-  // draw layers
+  // for each layers
   for (int l=0; l<layers.size(); l++) {
     // get current layer
     Layer layer = layers.get(l);
-
     if (saveSVG) beginRecord(SVG, filename + "-" + layer.index + ".svg");
 
-    // draw composition
+    // setup layer
     stroke(layer.c);
     strokeWeight(layer.sw);
     strokeCap(SQUARE);
 
+    // draw layer composition
     for (int b=0; b<layer.composition.size(); b++) {
-      // get and draw brush
       Brush brush = layer.composition.get(b);
-      //pushMatrix();
-      //translate(width/2, height/2);
-      //rotate(radians(map(dist(brush.x, brush.y, width/2, height/2), 0, height/2, 0, 360)));
       brush.draw();
-      //popMatrix();
     }
 
-    // marcas de corte
+    // draw helpers
+    // grid.drawMargins();
+    // grid.drawModules();
     trimMarks();
 
-    if (saveSVG) {
-      endRecord();
-    }
+    if (saveSVG) endRecord();
   }
 
   if (saveSVG) {
+    saveFrame(filename + ".png");
     saveSVG = false;
   }
 }
 
 // Composition rules
 void compose() {
-  // clean layers (descending order)
+  // first, clean layers (descending order)
   for (int l=0; l<layers.size(); l++) {
     Layer layer = layers.get(l);
-    for (int b=layer.composition.size()-1; b>=0; b--) {
-      layer.composition.remove(b);
-    }
+    layer.clean();
   }
 
   // set random seed
   randomSeed(seed);
 
-  // set cell size
-  float cellSize = width/tileCount;
-
   // create grid
-  for (int y=0; y<height-cellSize; y+=cellSize) {
-    for (int x=0; x<width-cellSize; x+=cellSize) {
+  for (int y=0; y<rows; y++) {        
+    for (int x=0; x<cols; x++) {
+      // create module
+      float mx = grid.getModuleX(x);
+      float my = grid.getModuleY(y);
 
-      // pick brush
-
+      // logic to pick brush for each module
       //int px = int(map(x, 0, width, 0, placeholder.width));
       //int py = int(map(y, 0, height, 0, placeholder.height));
       //float pixelBright = brightness(placeholder.get(px, py));
-
       int p = 0;
       if (chaos) {
         // random
-        p = floor(random(200) % layers.size());
+        p = floor(random(6));
       } else {
         // math
         // p = floor(dist(x, y, width/2, height/2) % layers.size());
-        // p = floor(sqrt(x+y) % layers.size());
-        // p = floor(aureo(x+y, true) % layers.size());
-        p = floor(random(6));
+        p = floor(sqrt(x+y) % 6);
+        //p = floor(aureo(x+y, true) % layers.size());
       }
 
       // create brush
-      Brush brush = new Brush(x, y, cellSize, cellSize, p);
+      Brush brush = new Brush(mx, my, grid.moduleWidth, grid.moduleHeight, p);
 
       // push brush into selected layer
       int l = floor(random(3));
@@ -133,15 +130,22 @@ void compose() {
 }
 
 // interactions
+void mousePressed() {
+  // seach in each layer
+  for (int l=0; l<layers.size(); l++) {
+    Layer layer = layers.get(l);
+    // for a brush by position and grab the id
+    int _id = layer.getBrushIdByPosition(mouseX, mouseY);
+    Brush b = layer.getBrushById(_id);
+    if (b != null) b.nextPattern();
+  }
+}
+
 void keyReleased() {
   seed = (int) random(100000);
   filename = "prints/" + timestamp() + "-" + seed;
   if (key == 's' || key == 'S') saveFrame(filename + ".png");
-  if (key == 'p' || key == 'P') {
-    saveFrame(filename + ".png");
-    saveSVG = true;
-  }
-
+  if (key == 'p' || key == 'P') saveSVG = true;
   if (key == 'c' || key == 'C') compose();
   if (key == 't' || key == 'T') {
     chaos = !chaos;
