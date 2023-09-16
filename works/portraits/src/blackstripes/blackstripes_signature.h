@@ -1,0 +1,1 @@
+static char signature[] = "<g transform=\"translate(%f, %f) scale(%f)\"><g transform=\"scale(0.3 0.3)\"><defs><style type=\"text/css\"><![CDATA[.sig {stroke: %s }]]></style></defs></g></g>";

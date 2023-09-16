@@ -1,0 +1,141 @@
+
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          class="artwork" 
+          viewBox="0 0 700 700" 
+          width="1400" 
+          height="1400">
+          <defs>
+            <pattern id="circles" patternUnits="userSpaceOnUse" width="4" height="4">
+              <circle fill="#555555" cx="1" cy="1" r="0.5"></circle>
+            </pattern>
+          </defs>
+          <rect 
+            x="0" 
+            y="0"
+            width="700"
+            height="700"
+            fill="#ffffff"
+          />
+          <g
+            transform="translate(70 70) scale(0.8)" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"
+            stroke-width="1"
+            stroke="#555555">
+            
+            <circle
+              cx="471"
+              cy="40"
+              r="20"
+              fill="none"
+              stroke-width="2"
+            >
+            </circle>
+            <circle
+              cx="471"
+              cy="40"
+              r="4"
+              fill="none"
+            >
+            </circle>
+          
+            <circle
+              cx="479"
+              cy="271"
+              r="110.5"
+              fill="none"
+              stroke-width="2"
+            >
+            </circle>
+            <circle
+              cx="479"
+              cy="271"
+              r="86"
+              fill="none"
+            >
+            </circle>
+          
+            <circle
+              cx="476"
+              cy="561"
+              r="69.5"
+              fill="none"
+              stroke-width="1"
+            >
+            </circle>
+            <circle
+              cx="476"
+              cy="561"
+              r="36"
+              fill="none"
+            >
+            </circle>
+          
+            <circle
+              cx="385"
+              cy="467"
+              r="116.5"
+              fill="none"
+              stroke-width="1"
+            >
+            </circle>
+            <circle
+              cx="385"
+              cy="467"
+              r="43"
+              fill="none"
+            >
+            </circle>
+          
+            <circle
+              cx="392"
+              cy="209"
+              r="104.5"
+              fill="none"
+              stroke-width="1"
+            >
+            </circle>
+            <circle
+              cx="392"
+              cy="209"
+              r="24"
+              fill="none"
+            >
+            </circle>
+          
+            <circle
+              cx="631"
+              cy="126"
+              r="34.5"
+              fill="none"
+              stroke-width="1"
+            >
+            </circle>
+            <circle
+              cx="631"
+              cy="126"
+              r="16"
+              fill="#555555"
+            >
+            </circle>
+          
+            <circle
+              cx="340"
+              cy="389"
+              r="155.5"
+              fill="none"
+              stroke-width="1"
+            >
+            </circle>
+            <circle
+              cx="340"
+              cy="389"
+              r="18"
+              fill="#555555"
+            >
+            </circle>
+          <polyline fill="url(#circles)" points="471,40 479,271 476,561 385,467 392,209 631,126 340,389"></polyline>
+          </g>
+        </svg>
+      
